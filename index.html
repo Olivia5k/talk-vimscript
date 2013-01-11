@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>vimscript - The love/hate relationship</title>
+
+    <meta name="description" content="Angry fast paced talk about vimscript">
+    <meta name="author" content="Lowe Thiderman">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+      <section>
+          <h1>vimscript - The love/hate relationship</h1>
+          <h3>by Lowe Thiderman</h3>
+          <h5 class="dark">vimscript.ninjaloot.se</h5>
+        </section>
+
+        <section>
+          <h2>So, wtf is vimscript?</h2>
+          <h3 class="fragment">Everyone in here has used it!</h3>
+          <ul>
+            <li class="fragment">Everyones .vimrc file</li>
+            <li class="fragment">Syntax highlighting</li>
+            <li class="fragment">Automatic indentation</li>
+            <li class="fragment">Folding</li>
+            <li class="fragment">...most vim features, actually</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>vimscript is the programmable interface to vim</h2>
+          <h3 class="dark fragment">(in two parts)</h3>
+          <ul>
+            <li class="fragment">Basic commands</li>
+            <ul>
+              <li class="fragment">:set, :e, :w</li>
+            </ul>
+            <li class="fragment">Programming language</li>
+            <ul>
+              <li class="fragment">...with all that that entails</li>
+            </ul>
+          </ul>
+        </section>
+
+        <section>
+          <h2>So what's wrong with it?</h2>
+
+          <ul>
+            <li class="fragment">It's a bastard language</li>
+            <li class="fragment">
+              A lot of common things are really irritating
+              <pre class="fragment"><code contenteditable>function! Shout(msg)
+  echo msg . '!'
+endfunction</code></pre>
+            </li>
+            <li class="fragment">Errors can be seriously hard to trail</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>But what's awesome with it then? :3</h2>
+
+          <h3 class="fragment" style="margin-top: 10%;">It can do <i>everything</i> that vim can do!</h3>
+          <h4 class="fragment">...and it can do it a million times faster than you can!</h4>
+        </section>
+
+        <section>
+          <h2>Function example!</h2>
+          <p class="fragment">Last changed: 2013-01-09 19:31:31 GMT +0100</p>
+          <pre class="fragment"><code contenteditable>function! Timestamp()
+  let match = '\v\C%(&lt;Last changed\s*:\s+) &lt;TIMESTAMP&gt;'
+  let repl  = '%Y-%m-%d %H:%M:%S %z %Z'
+
+  for linenr in range(1, 20)
+    let line = getline(linenr)
+    if line =~ match
+      let newline = substitute(line, match, strftime(repl), '')
+      return setline(linenr, newline)
+    endif
+  endfor
+endfunction</code></pre>
+          <pre class="fragment"><code contenteditable>:call Timestamp()</code></pre>
+        </section>
+
+        <section>
+          <h2>
+            Best feature evar:<br />
+            <span class="fragment">Autocommands!</span>
+          </h2>
+
+          <ul>
+            <li class="fragment">Make vim automatically do things for you</li>
+            <li class="fragment">Over a hundred events defined</li>
+            <ul>
+              <li class="fragment">Before and after loading and saving files</li>
+              <li class="fragment">Entering and exiting insert mode, not moving the cursor for a while</li>
+              <li class="fragment">Getting or losing focus to the vim window</li>
+            </ul>
+          </ul>
+        </section>
+
+        <section>
+          <h2>
+            Autocommand examples!!
+          </h2>
+          <pre class="fragment"><code contenteditable>au BufWritePost *.json echo "Wrote a JSON file, lol!"</code></pre>
+          <pre class="fragment"><code contenteditable>au BufWritePre * call Timestamp()</code></pre>
+          <pre class="fragment"><code contenteditable>au BufRead,BufNewFile *nginx/*.conf set ft=nginx
+
+au FileType nginx set foldmethod=marker foldmarker={,}
+au FileType nginx set shiftwidth=4 softtabstop=4 noexpandtab
+au FileType nginx set commentstring=#%s</code></pre>
+
+        </section>
+
+        <section>
+          <h2>Learn moar!</h2>
+
+          <div class="fragment">
+            <h3 style="margin-top: 10%;">
+              <a href="http://learnvimscriptthehardway.stevelosh.com">
+                Learn Vimscript The Hard Way
+              </a>
+            </h3>
+            <p class="dark">(by Steve Losh)</p>
+          </div>
+        </section>
+
+        <section>
+          <h2>Get help!</h2>
+
+          <h3 class="fragment" style="margin-top: 10%;">#vim @ irc.freenode.net</h3>
+          <h3 class="fragment">@thiderman on twitter!</h3>
+        </section>
+
+        <section>
+          <h1>thx &lt;3</h1>
+        </section>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: false,
+        progress: true,
+        history: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/highlight.js', async: true, callback: function() { window.hljs.initHighlightingOnLoad(); } },
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'lib/js/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'lib/js/data-markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+    </script>
+
+  </body>
+</html>
